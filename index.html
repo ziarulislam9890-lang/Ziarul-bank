@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ziarul Bank</title>
+    <meta
+      name="description"
+      content="Ziarul Bank account opening, KYC, CSC/CSP registration, UPI, QR, and recharge solution prototype."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container nav">
+        <div class="brand">
+          <div class="brand-mark">Z</div>
+          <span>Ziarul Bank</span>
+        </div>
+        <nav>
+          <a href="#features">Services</a>
+          <a href="#account-opening">Account Opening</a>
+          <a href="#kyc">KYC</a>
+          <a href="#csp">CSP / CSC</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <button class="primary-btn">Open Account</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <span class="eyebrow">Digital banking made easy</span>
+            <h1>Secure account opening with digital onboarding and KYC.</h1>
+            <p>
+              Open a bank account, complete eKYC or cKYC, register as a CSP/CSC,
+              and access UPI, QR payments, and recharge services from one place.
+            </p>
+            <div class="hero-actions">
+              <a href="#account-opening" class="primary-btn">Start Application</a>
+              <a href="#features" class="secondary-btn">Explore Services</a>
+            </div>
+            <ul class="trust-list">
+              <li>Fast onboarding</li>
+              <li>Secure verification</li>
+              <li>Digital payments</li>
+            </ul>
+          </div>
+
+          <div class="hero-card">
+            <div class="status-chip">Live onboarding</div>
+            <div class="progress-box">
+              <div class="progress-head">
+                <span>Application progress</span>
+                <strong>72%</strong>
+              </div>
+              <div class="progress-bar">
+                <span></span>
+              </div>
+              <ul>
+                <li class="done">Mobile OTP verified</li>
+                <li class="done">Aadhaar verified</li>
+                <li class="current">PAN verification</li>
+                <li>eKYC review</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features" id="features">
+        <div class="container">
+          <div class="section-heading">
+            <span class="eyebrow">Our services</span>
+            <h2>Everything your customers need in one digital experience.</h2>
+          </div>
+
+          <div class="card-grid">
+            <article class="feature-card">
+              <div class="icon">💳</div>
+              <h3>Account Opening</h3>
+              <p>Quick and secure opening with mobile OTP, Aadhaar, and PAN checks.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="icon">✅</div>
+              <h3>eKYC / cKYC</h3>
+              <p>Digital identity verification with steps for compliance and monitoring.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="icon">🎥</div>
+              <h3>Video KYC</h3>
+              <p>Customer onboarding via guided live verification and document review.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="icon">📱</div>
+              <h3>UPI & QR</h3>
+              <p>Fast QR payments, UPI transactions, and digital merchant experiences.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="icon">🔁</div>
+              <h3>Free Recharge</h3>
+              <p>Recharge support and wallet-like features for user convenience.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="icon">🏛️</div>
+              <h3>CSP / CSC Registration</h3>
+              <p>Register, login, and manage your service center account securely.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="account-open" id="account-opening">
+        <div class="container split-layout">
+          <div>
+            <span class="eyebrow">Apply today</span>
+            <h2>Open a new account</h2>
+            <p class="section-text">
+              Start a secure application with customer identity checks, document upload,
+              and verification status tracking.
+            </p>
+            <div class="mini-list">
+              <div>
+                <strong>Mobile OTP</strong>
+                <span>Verified through SMS</span>
+              </div>
+              <div>
+                <strong>Aadhaar & PAN</strong>
+                <span>Identity and compliance checks</span>
+              </div>
+              <div>
+                <strong>eKYC / cKYC</strong>
+                <span>Automatic onboarding review</span>
+              </div>
+            </div>
+          </div>
+
+          <form id="accountForm" class="bank-form">
+            <div class="field-group">
+              <label for="fullName">Full Name</label>
+              <input id="fullName" name="fullName" type="text" placeholder="Enter full name" required />
+            </div>
+
+            <div class="field-group">
+              <label for="mobile">Mobile Number</label>
+              <input id="mobile" name="mobile" type="tel" placeholder="Enter mobile number" required />
+            </div>
+
+            <div class="field-group">
+              <label for="aadhaar">Aadhaar Number</label>
+              <input id="aadhaar" name="aadhaar" type="text" placeholder="0000 0000 0000" required />
+            </div>
+
+            <div class="field-group">
+              <label for="pan">PAN Number</label>
+              <input id="pan" name="pan" type="text" placeholder="ABCDE1234F" required />
+            </div>
+
+            <div class="field-group">
+              <label for="education">Education / Category</label>
+              <select id="education" name="education">
+                <option value="school">School</option>
+                <option value="college">College</option>
+                <option value="ma">MA / MBA</option>
+                <option value="mbbs">MBBS</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="field-group">
+              <label for="accountType">Account Type</label>
+              <select id="accountType" name="accountType">
+                <option value="savings">Savings</option>
+                <option value="current">Current</option>
+                <option value="student">Student</option>
+                <option value="salary">Salary</option>
+              </select>
+            </div>
+
+            <div class="field-group file-upload">
+              <label for="profileImage">Account Details Image</label>
+              <input id="profileImage" name="profileImage" type="file" accept="image/*" />
+            </div>
+
+            <div class="actions-row">
+              <button type="submit" class="primary-btn">Submit Application</button>
+              <button type="button" id="saveDraft" class="secondary-btn">Save Draft</button>
+            </div>
+
+            <p id="statusMessage" class="status-message" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section class="kyc" id="kyc">
+        <div class="container">
+          <div class="section-heading narrow">
+            <span class="eyebrow">Identity verification</span>
+            <h2>eKYC and cKYC status overview</h2>
+          </div>
+
+          <div class="verification-grid">
+            <div class="verification-card">
+              <div class="verification-top">
+                <h3>Mobile OTP</h3>
+                <span class="success-tag">Verified</span>
+              </div>
+              <p>SMS-based identity confirmation completed successfully.</p>
+            </div>
+
+            <div class="verification-card">
+              <div class="verification-top">
+                <h3>Aadhaar verification</h3>
+                <span class="success-tag">Verified</span>
+              </div>
+              <p>Demographic details matched and document checked.</p>
+            </div>
+
+            <div class="verification-card">
+              <div class="verification-top">
+                <h3>PAN verification</h3>
+                <span class="pending-tag">In review</span>
+              </div>
+              <p>Awaiting final compliance and record validation.</p>
+            </div>
+
+            <div class="verification-card">
+              <div class="verification-top">
+                <h3>Video KYC</h3>
+                <span class="pending-tag">Pending</span>
+              </div>
+              <p>Customer video validation will be completed in the final check.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="csp" id="csp">
+        <div class="container csp-layout">
+          <div class="csp-card">
+            <span class="eyebrow">CSP / CSC</span>
+            <h2>Registration and login for service partners</h2>
+            <p>
+              Secure partner portal for service registration, onboarding, login, and
+              account management for digital banking operations.
+            </p>
+            <ul>
+              <li>Service agent registration</li>
+              <li>Secure login access</li>
+              <li>Account management dashboard</li>
+              <li>Transaction and partner reporting</li>
+            </ul>
+          </div>
+
+          <div class="mini-dashboard">
+            <div class="mini-stat">
+              <span>Active users</span>
+              <strong>12,540</strong>
+            </div>
+            <div class="mini-stat">
+              <span>Transactions</span>
+              <strong>48,200</strong>
+            </div>
+            <div class="mini-stat">
+              <span>QR payments</span>
+              <strong>8,710</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div class="container footer-row">
+        <div>
+          <div class="brand footer-brand">
+            <div class="brand-mark">Z</div>
+            <span>Ziarul Bank</span>
+          </div>
+          <p>Banking and digital service platform for secure onboarding and payments.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#features">Services</a>
+          <a href="#account-opening">Account Opening</a>
+          <a href="#kyc">KYC</a>
+          <a href="#csp">CSP / CSC</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
