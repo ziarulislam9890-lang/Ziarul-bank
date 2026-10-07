@@ -1,0 +1,565 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  Smartphone, CreditCard, Video, ShieldCheck, 
+  QrCode, Zap, GraduationCap, User, ArrowRight, 
+  ChevronLeft, Building, FileText, Home, 
+  LogOut, Wallet, Scan, Send, Grid, Settings
+} from 'lucide-react';
+
+export default function ZiarulBankApp() {
+  // State for app navigation
+  const [currentView, setCurrentView] = useState('splash'); // splash, home, customer-onboarding, csp-portal, dashboard, csp-dashboard
+  
+  // State for Onboarding Flow
+  const [onboardingStep, setOnboardingStep] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [accountType, setAccountType] = useState('regular');
+  
+  // Form Data States
+  const [formData, setFormData] = useState({
+    mobile: '',
+    mobileOtp: '',
+    aadhar: '',
+    aadharOtp: '',
+    pan: '',
+    kycType: '',
+    educationLevel: ''
+  });
+
+  // Simulate loading and move to next step
+  const handleNextStep = (step) => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setOnboardingStep(step);
+    }, 1200);
+  };
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const finishAccountOpening = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setCurrentView('dashboard');
+    }, 1500);
+  };
+
+  const logout = () => {
+    setCurrentView('home');
+    setOnboardingStep(1);
+    setFormData({});
+  };
+
+  // Initial Splash Screen effect
+  useEffect(() => {
+    if (currentView === 'splash') {
+      const timer = setTimeout(() => setCurrentView('home'), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [currentView]);
+
+  if (currentView === 'splash') {
+    return (
+      <div className="w-full h-screen max-w-md mx-auto bg-blue-700 flex flex-col items-center justify-center text-white shadow-2xl relative overflow-hidden">
+        <div className="absolute top-[-50px] left-[-50px] w-40 h-40 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+        <div className="absolute bottom-[-50px] right-[-50px] w-40 h-40 bg-blue-800 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
+        <Building size={80} className="mb-4 drop-shadow-lg" />
+        <h1 className="text-4xl font-extrabold tracking-wider">ZIARUL</h1>
+        <h2 className="text-xl font-light tracking-widest mt-1">BANK</h2>
+        <div className="mt-8">
+          <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (currentView === 'home') {
+    return (
+      <div className="w-full h-screen max-w-md mx-auto bg-gray-50 flex flex-col shadow-2xl relative">
+        <div className="bg-blue-700 text-white p-8 rounded-b-3xl shadow-lg flex flex-col items-center justify-center">
+          <Building size={64} className="mb-2" />
+          <h1 className="text-3xl font-bold">Welcome to Ziarul Bank</h1>
+          <p className="text-blue-200 mt-2 text-center text-sm">Next Generation Digital Banking & CSC Network</p>
+        </div>
+        
+        <div className="flex-1 p-6 flex flex-col justify-center space-y-6">
+          <button 
+            onClick={() => setCurrentView('customer-onboarding')}
+            className="w-full bg-white p-6 rounded-2xl shadow-md border border-gray-100 flex items-center space-x-4 hover:shadow-lg transition-all active:scale-95 group"
+          >
+            <div className="bg-blue-100 p-4 rounded-full text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+              <User size={32} />
+            </div>
+            <div className="text-left flex-1">
+              <h3 className="text-xl font-bold text-gray-800">Open Bank Account</h3>
+              <p className="text-sm text-gray-500">Savings, Salary, or School Life</p>
+            </div>
+            <ArrowRight className="text-gray-400 group-hover:text-blue-600" />
+          </button>
+
+          <button 
+            onClick={() => setCurrentView('csp-portal')}
+            className="w-full bg-white p-6 rounded-2xl shadow-md border border-gray-100 flex items-center space-x-4 hover:shadow-lg transition-all active:scale-95 group"
+          >
+            <div className="bg-orange-100 p-4 rounded-full text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+              <Grid size={32} />
+            </div>
+            <div className="text-left flex-1">
+              <h3 className="text-xl font-bold text-gray-800">CSP / CSC Portal</h3>
+              <p className="text-sm text-gray-500">Agent Login & Registration</p>
+            </div>
+            <ArrowRight className="text-gray-400 group-hover:text-orange-600" />
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (currentView === 'customer-onboarding') {
+    return (
+      <div className="w-full h-screen max-w-md mx-auto bg-gray-50 flex flex-col shadow-2xl relative overflow-y-auto">
+        {/* Header */}
+        <div className="bg-white sticky top-0 z-10 p-4 flex items-center space-x-4 shadow-sm">
+          <button onClick={() => setCurrentView('home')} className="p-2 bg-gray-100 rounded-full text-gray-600">
+            <ChevronLeft size={24} />
+          </button>
+          <h2 className="text-lg font-bold text-gray-800">Account Opening</h2>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="px-6 py-4">
+          <div className="flex justify-between items-center mb-2">
+            {[1, 2, 3, 4, 5].map((step) => (
+              <div key={step} className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${onboardingStep >= step ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 text-gray-400'}`}>
+                {step}
+              </div>
+            ))}
+          </div>
+          <div className="h-1 w-full bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-full bg-blue-600 transition-all duration-300" style={{ width: `${(onboardingStep / 5) * 100}%` }}></div>
+          </div>
+        </div>
+
+        {/* Form Steps */}
+        <div className="flex-1 p-6 pt-2">
+          {/* STEP 1: Mobile & Account Type */}
+          {onboardingStep === 1 && (
+            <div className="space-y-6 animate-fade-in">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-1">Let's get started</h3>
+                <p className="text-gray-500 text-sm">Verify your mobile number to begin.</p>
+              </div>
+
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-gray-700">Account Type</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button onClick={() => setAccountType('regular')} className={`p-3 rounded-xl border ${accountType === 'regular' ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-200 bg-white'}`}>
+                    Regular Savings
+                  </button>
+                  <button onClick={() => setAccountType('school')} className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-1 ${accountType === 'school' ? 'border-blue-600 bg-blue-50 text-blue-700' : 'border-gray-200 bg-white'}`}>
+                    <GraduationCap size={18} />
+                    <span className="text-xs font-semibold">School Life A/C</span>
+                  </button>
+                </div>
+              </div>
+
+              {accountType === 'school' && (
+                 <div className="space-y-2 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                   <label className="text-sm font-semibold text-blue-800">Select Education Level</label>
+                   <select 
+                     className="w-full p-3 rounded-lg border border-blue-200 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                     value={formData.educationLevel}
+                     onChange={handleInputChange}
+                     name="educationLevel"
+                   >
+                     <option value="">Select Level</option>
+                     <option value="class1-5">Primary (Class 1 to 5)</option>
+                     <option value="class6-10">Secondary (Class 6 to 10)</option>
+                     <option value="class11-12">Higher Secondary (11-12)</option>
+                     <option value="ug">Undergraduate (BA, BSc, BCom)</option>
+                     <option value="pg">Postgraduate (MA, MBBS, MBA)</option>
+                   </select>
+                 </div>
+              )}
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Mobile Number</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-3.5 text-gray-500">+91</span>
+                  <input type="tel" name="mobile" value={formData.mobile} onChange={handleInputChange} className="w-full pl-12 p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="10-digit number" />
+                </div>
+              </div>
+
+              {formData.mobile.length === 10 && (
+                <div className="space-y-2 animate-fade-in">
+                  <label className="text-sm font-semibold text-gray-700">Enter OTP</label>
+                  <input type="number" name="mobileOtp" value={formData.mobileOtp} onChange={handleInputChange} className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center tracking-widest text-lg" placeholder="• • • • • •" />
+                </div>
+              )}
+
+              <button 
+                onClick={() => handleNextStep(2)}
+                disabled={formData.mobileOtp.length < 4}
+                className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl disabled:opacity-50 disabled:bg-gray-400 mt-6 relative"
+              >
+                {loading ? <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div> : 'Verify & Next'}
+              </button>
+            </div>
+          )}
+
+          {/* STEP 2: Aadhar */}
+          {onboardingStep === 2 && (
+            <div className="space-y-6 animate-fade-in">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-1">Aadhar Verification</h3>
+                <p className="text-gray-500 text-sm">Link your Aadhar card for seamless KYC.</p>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">Aadhar Number</label>
+                <div className="relative">
+                  <ShieldCheck className="absolute left-3 top-3 text-gray-400" size={20} />
+                  <input type="number" name="aadhar" value={formData.aadhar} onChange={handleInputChange} className="w-full pl-10 p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="12-digit Aadhar number" />
+                </div>
+              </div>
+
+              {formData.aadhar.length >= 12 && (
+                <div className="space-y-2 animate-fade-in">
+                  <label className="text-sm font-semibold text-gray-700">Aadhar Linked Mobile OTP</label>
+                  <input type="number" name="aadharOtp" value={formData.aadharOtp} onChange={handleInputChange} className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-center tracking-widest text-lg" placeholder="• • • • • •" />
+                </div>
+              )}
+
+              <button 
+                onClick={() => handleNextStep(3)}
+                disabled={formData.aadharOtp.length < 4}
+                className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl disabled:opacity-50 disabled:bg-gray-400 mt-6"
+              >
+                {loading ? <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div> : 'Verify Aadhar'}
+              </button>
+            </div>
+          )}
+
+          {/* STEP 3: PAN Card */}
+          {onboardingStep === 3 && (
+            <div className="space-y-6 animate-fade-in">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-1">PAN Details</h3>
+                <p className="text-gray-500 text-sm">Required for financial transactions.</p>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-gray-700">PAN Card Number</label>
+                <div className="relative">
+                  <FileText className="absolute left-3 top-3 text-gray-400" size={20} />
+                  <input type="text" name="pan" value={formData.pan} onChange={handleInputChange} className="w-full pl-10 p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase" placeholder="ABCDE1234F" />
+                </div>
+              </div>
+
+              <button 
+                onClick={() => handleNextStep(4)}
+                disabled={formData.pan.length < 10}
+                className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl disabled:opacity-50 disabled:bg-gray-400 mt-6"
+              >
+                {loading ? <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div> : 'Verify PAN'}
+              </button>
+            </div>
+          )}
+
+          {/* STEP 4: KYC Selection */}
+          {onboardingStep === 4 && (
+            <div className="space-y-6 animate-fade-in">
+              <div>
+                <h3 className="text-2xl font-bold text-gray-800 mb-1">Complete KYC</h3>
+                <p className="text-gray-500 text-sm">Choose how you want to complete your verification.</p>
+              </div>
+
+              <div className="space-y-4">
+                <button onClick={() => setFormData({...formData, kycType: 'ekyc'})} className={`w-full p-4 rounded-xl border-2 flex items-center space-x-4 ${formData.kycType === 'ekyc' ? 'border-blue-600 bg-blue-50' : 'border-gray-200 bg-white'}`}>
+                  <div className="bg-blue-100 p-3 rounded-full text-blue-600"><Smartphone size={24} /></div>
+                  <div className="text-left">
+                    <h4 className="font-bold text-gray-800">eKYC (Aadhar OTP)</h4>
+                    <p className="text-xs text-gray-500">Instant approval, limits apply.</p>
+                  </div>
+                </button>
+                
+                <button onClick={() => setFormData({...formData, kycType: 'ckyc'})} className={`w-full p-4 rounded-xl border-2 flex items-center space-x-4 ${formData.kycType === 'ckyc' ? 'border-blue-600 bg-blue-50' : 'border-gray-200 bg-white'}`}>
+                  <div className="bg-purple-100 p-3 rounded-full text-purple-600"><FileText size={24} /></div>
+                  <div className="text-left">
+                    <h4 className="font-bold text-gray-800">cKYC (Central KYC)</h4>
+                    <p className="text-xs text-gray-500">Fetch details from CERSAI.</p>
+                  </div>
+                </button>
+
+                <button onClick={() => setFormData({...formData, kycType: 'videokyc'})} className={`w-full p-4 rounded-xl border-2 flex items-center space-x-4 ${formData.kycType === 'videokyc' ? 'border-blue-600 bg-blue-50' : 'border-gray-200 bg-white'}`}>
+                  <div className="bg-green-100 p-3 rounded-full text-green-600"><Video size={24} /></div>
+                  <div className="text-left">
+                    <h4 className="font-bold text-gray-800">Video KYC (Full A/C)</h4>
+                    <p className="text-xs text-gray-500">Connect with agent via video call.</p>
+                  </div>
+                </button>
+              </div>
+
+              <button 
+                onClick={() => handleNextStep(5)}
+                disabled={!formData.kycType}
+                className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl disabled:opacity-50 disabled:bg-gray-400 mt-6"
+              >
+                {loading ? <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div> : 'Proceed'}
+              </button>
+            </div>
+          )}
+
+          {/* STEP 5: Final Review / Video KYC Mock */}
+          {onboardingStep === 5 && (
+            <div className="space-y-6 animate-fade-in flex flex-col items-center justify-center py-8">
+              {formData.kycType === 'videokyc' ? (
+                <>
+                  <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center animate-pulse mb-4">
+                    <Video size={48} className="text-gray-400" />
+                  </div>
+                  <h3 className="text-xl font-bold text-center">Connecting to Agent...</h3>
+                  <p className="text-center text-gray-500 mb-8">Please keep your original PAN card ready.</p>
+                </>
+              ) : (
+                <>
+                  <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                    <ShieldCheck size={48} className="text-green-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-center">Verification Successful</h3>
+                  <p className="text-center text-gray-500 mb-8">Your details have been verified successfully.</p>
+                </>
+              )}
+
+              <button 
+                onClick={finishAccountOpening}
+                className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg mt-6"
+              >
+                {loading ? <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto"></div> : 'Open My Account'}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  if (currentView === 'csp-portal') {
+    return (
+      <div className="w-full h-screen max-w-md mx-auto bg-gray-50 flex flex-col shadow-2xl relative">
+        <div className="bg-orange-600 text-white p-6 rounded-b-3xl shadow-lg relative">
+          <button onClick={() => setCurrentView('home')} className="absolute top-6 left-4 p-2 bg-orange-700 rounded-full text-white">
+            <ChevronLeft size={20} />
+          </button>
+          <div className="flex flex-col items-center mt-6">
+            <Grid size={48} className="mb-2" />
+            <h1 className="text-2xl font-bold text-center">CSP / CSC Network</h1>
+            <p className="text-orange-200 text-sm mt-1">Ziarul Bank Agent Portal</p>
+          </div>
+        </div>
+
+        <div className="p-6 space-y-6 flex-1 flex flex-col justify-center">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <h3 className="text-lg font-bold mb-4 text-gray-800">Agent Login</h3>
+            <div className="space-y-4">
+              <input type="text" placeholder="CSP / CSC ID" className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+              <input type="password" placeholder="Password" className="w-full p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500" />
+              <button 
+                onClick={() => {
+                  setLoading(true);
+                  setTimeout(() => { setLoading(false); setCurrentView('csp-dashboard'); }, 1000);
+                }}
+                className="w-full bg-orange-600 text-white font-bold py-3 rounded-xl hover:bg-orange-700 transition-colors"
+              >
+                {loading ? 'Logging in...' : 'Login'}
+              </button>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <p className="text-sm text-gray-500">Don't have a CSP code?</p>
+            <button className="text-orange-600 font-bold mt-2 hover:underline">Register for New CSP / CSC</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (currentView === 'csp-dashboard') {
+    return (
+       <div className="w-full h-screen max-w-md mx-auto bg-gray-50 flex flex-col shadow-2xl relative">
+        <div className="bg-orange-600 text-white p-6 rounded-b-3xl shadow-lg flex justify-between items-center">
+          <div>
+            <h2 className="text-xl font-bold">Welcome, Agent</h2>
+            <p className="text-orange-200 text-sm">ID: CSC-ZB-9942</p>
+          </div>
+          <button onClick={logout} className="p-2 bg-orange-700 rounded-full hover:bg-orange-800">
+            <LogOut size={20} />
+          </button>
+        </div>
+
+        <div className="p-4 grid grid-cols-2 gap-4 mt-4">
+          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center space-y-2">
+            <div className="bg-blue-100 p-3 rounded-full text-blue-600"><User size={24}/></div>
+            <span className="font-semibold text-sm">Open Customer A/C</span>
+          </div>
+          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center space-y-2">
+            <div className="bg-green-100 p-3 rounded-full text-green-600"><Wallet size={24}/></div>
+            <span className="font-semibold text-sm">Cash Deposit</span>
+          </div>
+          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center space-y-2">
+            <div className="bg-red-100 p-3 rounded-full text-red-600"><CreditCard size={24}/></div>
+            <span className="font-semibold text-sm">Cash Withdrawal</span>
+          </div>
+          <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center space-y-2">
+            <div className="bg-purple-100 p-3 rounded-full text-purple-600"><Zap size={24}/></div>
+            <span className="font-semibold text-sm">Bill Payments</span>
+          </div>
+        </div>
+       </div>
+    );
+  }
+
+  if (currentView === 'dashboard') {
+    return (
+      <div className="w-full h-screen max-w-md mx-auto bg-gray-50 flex flex-col shadow-2xl relative overflow-y-auto pb-20">
+        {/* Top Header & Account Details Image/Card */}
+        <div className="bg-gradient-to-br from-blue-700 to-blue-900 text-white p-6 rounded-b-3xl shadow-lg">
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-blue-300">
+                <img src="https://placehold.co/100x100/e2e8f0/475569?text=User" alt="Profile" className="w-full h-full object-cover" />
+              </div>
+              <div>
+                <p className="text-blue-200 text-xs uppercase tracking-wider">Welcome Back</p>
+                <h2 className="font-bold text-lg">Valued Customer</h2>
+              </div>
+            </div>
+            <button onClick={logout} className="p-2 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
+              <LogOut size={18} />
+            </button>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur-md p-5 rounded-2xl border border-white/20 shadow-inner relative overflow-hidden">
+             <div className="absolute top-0 right-0 p-4 opacity-10"><Building size={80} /></div>
+             <p className="text-blue-100 text-sm mb-1">
+               {accountType === 'school' ? `School Life A/C (${formData.educationLevel || 'Student'})` : 'Savings Account'}
+             </p>
+             <p className="text-2xl font-mono tracking-widest font-bold mb-4">**** **** 4209</p>
+             <div className="flex justify-between items-end">
+               <div>
+                 <p className="text-blue-200 text-xs">Available Balance</p>
+                 <h3 className="text-3xl font-bold">₹ 0.00</h3>
+               </div>
+               <div className="bg-white text-blue-800 text-xs font-bold px-3 py-1 rounded-full">
+                 Active
+               </div>
+             </div>
+          </div>
+        </div>
+
+        {/* Quick Actions (UPI, QR) */}
+        <div className="px-6 py-6">
+          <h3 className="text-gray-800 font-bold mb-4">Quick Actions</h3>
+          <div className="grid grid-cols-4 gap-4">
+            <div className="flex flex-col items-center space-y-2 group cursor-pointer">
+              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                <Scan size={24} />
+              </div>
+              <span className="text-xs font-medium text-gray-600">Scan QR</span>
+            </div>
+            
+            <div className="flex flex-col items-center space-y-2 group cursor-pointer">
+              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                <Send size={24} />
+              </div>
+              <span className="text-xs font-medium text-gray-600">UPI Send</span>
+            </div>
+
+            <div className="flex flex-col items-center space-y-2 group cursor-pointer">
+              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition-all">
+                <QrCode size={24} />
+              </div>
+              <span className="text-xs font-medium text-gray-600">My QR</span>
+            </div>
+
+            <div className="flex flex-col items-center space-y-2 group cursor-pointer">
+              <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center text-orange-600 group-hover:bg-orange-600 group-hover:text-white transition-all relative">
+                <Zap size={24} />
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">Free</span>
+              </div>
+              <span className="text-xs font-medium text-gray-600">Recharge</span>
+            </div>
+          </div>
+        </div>
+
+        {/* All Services */}
+        <div className="px-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-gray-800 font-bold">Account All Services</h3>
+            <button className="text-blue-600 text-sm font-semibold">View All</button>
+          </div>
+          
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="border-b border-gray-100 p-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
+              <div className="flex items-center space-x-3">
+                <div className="bg-blue-50 p-2 rounded-lg text-blue-600"><FileText size={20} /></div>
+                <span className="font-semibold text-gray-700">Account Statement</span>
+              </div>
+              <ArrowRight size={16} className="text-gray-400" />
+            </div>
+            
+            <div className="border-b border-gray-100 p-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
+              <div className="flex items-center space-x-3">
+                <div className="bg-purple-50 p-2 rounded-lg text-purple-600"><CreditCard size={20} /></div>
+                <span className="font-semibold text-gray-700">Debit / Virtual Cards</span>
+              </div>
+              <ArrowRight size={16} className="text-gray-400" />
+            </div>
+
+            <div className="border-b border-gray-100 p-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
+              <div className="flex items-center space-x-3">
+                <div className="bg-yellow-50 p-2 rounded-lg text-yellow-600"><ShieldCheck size={20} /></div>
+                <span className="font-semibold text-gray-700">Update KYC</span>
+              </div>
+              <ArrowRight size={16} className="text-gray-400" />
+            </div>
+
+            <div className="p-4 flex items-center justify-between hover:bg-gray-50 cursor-pointer">
+              <div className="flex items-center space-x-3">
+                <div className="bg-gray-100 p-2 rounded-lg text-gray-600"><Settings size={20} /></div>
+                <span className="font-semibold text-gray-700">Service Requests</span>
+              </div>
+              <ArrowRight size={16} className="text-gray-400" />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Navigation */}
+        <div className="absolute bottom-0 w-full bg-white border-t border-gray-200 flex justify-around p-3 pb-6 rounded-t-2xl shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
+           <button className="flex flex-col items-center text-blue-600">
+             <Home size={24} className="mb-1" />
+             <span className="text-[10px] font-bold">Home</span>
+           </button>
+           <button className="flex flex-col items-center text-gray-400 hover:text-blue-600 transition-colors">
+             <Wallet size={24} className="mb-1" />
+             <span className="text-[10px] font-bold">Pay</span>
+           </button>
+           <button className="flex flex-col items-center text-gray-400 hover:text-blue-600 transition-colors">
+             <Grid size={24} className="mb-1" />
+             <span className="text-[10px] font-bold">Services</span>
+           </button>
+           <button className="flex flex-col items-center text-gray-400 hover:text-blue-600 transition-colors">
+             <User size={24} className="mb-1" />
+             <span className="text-[10px] font-bold">Profile</span>
+           </button>
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+}
